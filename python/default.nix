@@ -1,10 +1,12 @@
 {pkgs ? import <nixpkgs> {}}:
 pkgs.mkShell {
-  buildInputs = with pkgs.python311Packages; [
-    pip
-    pypresence
+
+  buildInputs = with pkgs; [
+    pyright
+    python311Packages.pip
+    python311Packages.pypresence
   ];
   shellHook = ''
     echo "Environment is ready" | ${pkgs.lolcat}/bin/lolcat;
-  '';
+    '';
 }
