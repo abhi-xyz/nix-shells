@@ -1,9 +1,5 @@
 { pkgs ? import <nixpkgs> {} }:
-  let
-    overrides = (builtins.fromTOML (builtins.readFile ./rust-toolchain.toml));
-    libPath = with pkgs; lib.makeLibraryPath [
-      # load external libraries that you need in your rust project here
-    ];
+let
 in
   pkgs.mkShell rec {
     buildInputs = with pkgs; [
