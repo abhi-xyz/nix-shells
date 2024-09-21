@@ -12,6 +12,12 @@ in
       llvmPackages.bintools
       rustup
       rust-analyzer
+
+      openssl
+      gobject-introspection
+      glibc
+      glib
+      gio-sharp
       #  pkg-config
       # libgudev
       # libudev-zero
