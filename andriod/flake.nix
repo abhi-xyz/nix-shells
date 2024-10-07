@@ -9,6 +9,7 @@
         let pkgs = nixpkgs.legacyPackages.${system}; in
         {
           devShells.default = import ./shell.nix { inherit pkgs; };
+        config.android_sdk.accept_license = true;
         }
       );
 }

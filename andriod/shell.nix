@@ -1,24 +1,17 @@
-{ pkgs ? import <nixpkgs> {} }:
-pkgs.mkShell rec {
-  buildInputs = with pkgs; [
-    clang
-    # Replace llvmPackages with llvmPackages_X, where X is the latest LLVM version (at the time of writing, 16)
-    llvmPackages.bintools
+{ pkgs ? import <nixpkgs> {config.android_sdk.accept_license = true;         config.allowUnfree = true;
+} }:
 
-    android-studio
-    android-tools
-    android-studio-tools
-    openssl
-    gobject-introspection
-    glibc
-    glib
-    gio-sharp
-    #  pkg-config
-    # libgudev
-    # libudev-zero
-  ];
-  shellHook = ''
-      export PATH=$PATH:''${CARGO_HOME:-~/.cargo}/bin
-      export PATH=$PATH:''${RUSTUP_HOME:-~/.rustup}/toolchains/$RUSTC_VERSION-x86_64-unknown-linux-gnu/bin/
-      '';
-}
+let
+  androidSdk = pkgs.androidenv.androidPkgs_9_0.androidsdk;
+in
+  pkgs.mkShell {
+    buildInputs = with pkgs; [
+      android-studio
+      android-tools
+      android-studio-tools
+      androidSdk
+      glibc
+    ];
+    # override the aapt2 that gradle uses with the nix-shipped version
+    GRADLE_OPTS = "-Dorg.gradle.project.android.aapt2FromMavenOverride=${androidSdk}/libexec/android-sdk/build-tools/28.0.3/aapt2";
+  }
