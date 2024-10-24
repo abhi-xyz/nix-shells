@@ -14,11 +14,15 @@
           pkgs = import nixpkgs {inherit system;};
         });
   in {
+    allowUnfree = true;
     devShells = forEachSupportedSystem ({pkgs}: {
       default = pkgs.mkShell {
         packages = with pkgs; [
           neovim
-          virtualbox
+          virt-manager
+          libvirt
+          qemu_full
+          adwaita-qt
         ];
         shellHook = ''
           export PATH=$PATH:''${CARGO_HOME:-~/.cargo}/bin
