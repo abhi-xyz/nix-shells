@@ -21,6 +21,20 @@ in
       # pkg-config
       # libgudev
       # libudev-zero
+      (writeShellScriptBin "ff"
+        /*
+        bash
+        */
+        ''
+          ${fzf}/bin/fzf -e --cycle --walker-skip=.git,.direnv,target | xargs -r nvim
+        '')
+      (writeShellScriptBin "fzfr"
+        /*
+        bash
+        */
+        ''
+          ${fzf}/bin/fzf -e --cycle --walker-skip=.git,.direnv | xargs -r rm
+        '')
     ];
     RUSTC_VERSION = overrides.toolchain.channel;
     # https://github.com/rust-lang/rust-bindgen#environment-variables
