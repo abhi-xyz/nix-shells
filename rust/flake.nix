@@ -23,6 +23,7 @@
       ];
     };
   in {
+    formatter.${system} = pkgs.alejandra;
     packages.${system} = {
       ${manifest.name} = let 
         rustPlatform = pkgs.rustPlatform;
