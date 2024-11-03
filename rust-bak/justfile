@@ -1,3 +1,0 @@
-update-toolchain:
-  rustup update
-  rustup component add rust-analyzer
