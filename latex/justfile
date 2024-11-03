@@ -1,0 +1,6 @@
+check:
+  alejandra *.nix
+  nix flake check
+
+inputs-update:
+  nix flake update --inputs-from ~/projects/github/nixdots
