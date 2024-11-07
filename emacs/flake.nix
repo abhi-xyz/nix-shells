@@ -36,20 +36,20 @@
           # If being bool, the value of config is used.
           # Its value can also be a derivation like this if you want to do some
           # substitution:
-          #   defaultInitFile = pkgs.substituteAll {
-          #     name = "default.el";
-          #     src = ./emacs.el;
-          #     inherit (config.xdg) configHome dataHome;
-          #   };
+          # defaultInitFile = pkgs.substituteAll {
+          #   name = "default.el";
+          #   src = ./init.el;
+          #   #   inherit (config.xdg) configHome dataHome;
+          # };
           defaultInitFile = true;
 
-          package = pkgs.emacs-git;
+          package = pkgs.emacs;
           alwaysEnsure = true;
           alwaysTangle = true;
-          extraEmacsPackages = epkgs: [
-            epkgs.cask
-            epkgs.magit
-            epkgs.zoxide
+          packageElisp = builtins.readFile ./lisp/themes/elegant.el;
+          extraEmacsPackages = epkgs: with epkgs; [
+            cask
+            evil
           ];
 
           # Optionally override derivations.

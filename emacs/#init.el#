@@ -1,3 +1,4 @@
+(load-theme 'elegant t)
 
 (setq ring-bell-function 'ignore)
 
@@ -40,4 +41,3 @@
 (setq evil-insert-state-cursor 'bar)
 ;; In visual mode, use a hollow cursor
 (setq evil-visual-state-cursor 'hollow)
-(load-theme 'elegant t)
