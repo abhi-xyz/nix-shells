@@ -2,16 +2,19 @@
   description = "Flake template";
 
   inputs = {
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-24.05";
     unstable-nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
   };
 
-  outputs = { self, nixpkgs, unstable-nixpkgs }: let
+  outputs = { self, nixpkgs, unstable-nixpkgs, emacs-overlay }: let
     system = "x86_64-linux";
+    emacsOverlay = import self.inputs.emacs-overlay;
     pkgs = import nixpkgs {
       inherit system;
       config.allowUnfree = true;
       overlays = [
+        emacsOverlay
         (final: prev: {
           unstable = import unstable-nixpkgs {
             inherit system;
@@ -26,16 +29,35 @@
         unstable.neovim
         clang
         (aspellWithDicts (dicts: with dicts; [ en en-computers en-science es]))
-        (emacs.override {
-          # Use gtk3 instead of the default gtk2
-          withGTK3 = true;
-          withGTK2 = false;
-        }).overrideAttrs (attrs: {
-          # I don't want emacs.desktop file because I only use
-          # emacsclient.
-          postInstall = (attrs.postInstall or "") + ''
-      rm $out/share/applications/emacs.desktop
-          '';
+        (pkgs.emacsWithPackagesFromUsePackage {
+          config = ./init.el;
+
+          # Whether to include your config as a default init file.
+          # If being bool, the value of config is used.
+          # Its value can also be a derivation like this if you want to do some
+          # substitution:
+          #   defaultInitFile = pkgs.substituteAll {
+          #     name = "default.el";
+          #     src = ./emacs.el;
+          #     inherit (config.xdg) configHome dataHome;
+          #   };
+          defaultInitFile = true;
+
+          package = pkgs.emacs-git;
+          alwaysEnsure = true;
+          alwaysTangle = true;
+          extraEmacsPackages = epkgs: [
+            epkgs.cask
+            epkgs.magit
+            epkgs.zoxide
+          ];
+
+          # Optionally override derivations.
+          override = final: prev: {
+            weechat = prev.melpaPackages.weechat.overrideAttrs(old: {
+              patches = [ ./weechat-el.patch ];
+            });
+          };
         })
       ];
       shellHook = ''
