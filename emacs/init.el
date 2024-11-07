@@ -23,21 +23,30 @@
 
 (global-hl-line-mode 1)
 
+(setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
+(setq custom-file (concat user-emacs-directory "custom.el"))
+(load custom-file 'noerror)
+;; Set eln-cache dir
+(when (boundp 'native-comp-eln-load-path)
+  (startup-redirect-eln-cache (expand-file-name "~/.local/share/emacs/eln-cache/" user-emacs-directory)))
+;; Update `straight.el` to use the new directory
+(setq straight-base-dir (expand-file-name "~/.local/share/emacs"))
 
-(add-to-list 'load-path "~/.config/emacs/mods/")
-(add-to-list 'load-path "~/.config/emacs/mods/svg-lib/")
-(add-to-list 'load-path "~/.config/emacs/mods/nano-sidebar/")
-(add-to-list 'custom-theme-load-path "./lisp/themes/")
-(add-to-list 'custom-theme-load-path "~/.config/emacs/themes/nano-theme/")
+
+(load-theme 'doom-tokyo-night t)
 
 
-;; Customize the hl-line face color
-(set-face-background 'hl-line "#292c3c") ;;
-(set-face-background 'cursor "#94e2d5") ;;
-;; In normal mode, use a box cursor
-(setq evil-normal-state-cursor 'box)
-;; In insert mode, use a bar cursor
-(setq evil-insert-state-cursor 'bar)
-;; In visual mode, use a hollow cursor
-(setq evil-visual-state-cursor 'hollow)
-(load-theme 'elegant t)
+  (setq initial-buffer-choice 'dashboard-open)
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
+  (setq dashboard-banner-logo-title "  Emacs Is More Than A Text Editor!")
+  ;;(setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
+  (setq dashboard-startup-banner "~/.config/emacs.bak/themes/ascci.txt")  ;; use custom image as banner
+  (setq dashboard-center-content nil) ;; set to 't' for centered content
+  (setq dashboard-items '((recents . 5)
+                          (agenda . 5 )
+                          (bookmarks . 3)
+                          (projects . 3)
+                          (registers . 3)))
+  (dashboard-setup-startup-hook)
+
