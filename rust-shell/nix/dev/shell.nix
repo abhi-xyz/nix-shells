@@ -2,14 +2,16 @@
 
 with pkgs; mkShell {
   # nativeBuildInputs is usually what you want -- tools you need to run
-  nativeBuildInputs = with pkgs.buildPackages; [ lua ];
+  nativeBuildInputs = with pkgs.buildPackages; [
+    # lua 
+  ];
   buildInputs = [
-    openssl
-    pkg-config
-    llvmPackages.bintools
-    eza
+    # openssl
+    # pkg-config
+    # llvmPackages.bintools
+    # eza
     unstable.neovim
-    fd
+    # fd
     unstable.rustup
     rust-bin.stable.latest.default
   ];
