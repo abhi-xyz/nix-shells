@@ -45,7 +45,7 @@
         packages = {
           # we are not passing any pkgs overlay to default.nix
           # so it will build the pkg using the stable default channel
-          ${manifest.name} = pkgs.callPackage ./nix/release/default.nix {};
+          ${manifest.name} = pkgs.callPackage ./nix/release/default.nix { };
           default = pkgs.callPackage ./nix/release/default.nix { };
         }; 
         #  FIX: unchecked
