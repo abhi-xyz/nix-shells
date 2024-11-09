@@ -21,4 +21,4 @@ with pkgs; mkShell {
             export PATH=$PATH:''${RUSTUP_HOME:-~/.rustup}/toolchains/$RUSTC_VERSION-x86_64-unknown-linux-gnu/bin/
             echo "Environment ready!" | ${pkgs.lolcat}/bin/lolcat
             '';
-        };
+        }
