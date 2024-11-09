@@ -8,12 +8,12 @@ in
     version = manifest.version;
     cargoLock.lockFile = ../Cargo.lock;
     src = pkgs.lib.cleanSource ../.;
-    doCheck = pkgs.lib.mkDefault false;
+    doCheck =false;
 
     meta = with pkgs.lib; {
       description = manifest.description;
-      homepage = "https://github.com/abhi-xyz/${manifest.name}";
-      changelog = "https://github.com/abhi-xyz/${manifest.name}/releases";
+      homepage = "https://github.com/abhi-xyz/${pname}";
+      changelog = "https://github.com/abhi-xyz/${pname}/releases";
       license = licenses.mit;
       maintainers = with maintainers; [ Abhinandh S ];
       platforms = platforms.linux;

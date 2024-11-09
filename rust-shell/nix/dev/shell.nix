@@ -1,30 +1,43 @@
+{ pkgs }:
+
+with pkgs; mkShell {
+  # nativeBuildInputs is usually what you want -- tools you need to run
+  nativeBuildInputs = with pkgs.buildPackages; [ lua ];
+  buildInputs = [
+    openssl
+    pkg-config
+    llvmPackages.bintools
+    eza
+    unstable.neovim
+    fd
+    unstable.rustup
+    rust-bin.stable.latest.default
+  ];
+
+  shellHook = ''
+            alias ls=eza
+            alias find=fd
+            export PATH=$PATH:''${CARGO_HOME:-~/.cargo}/bin
+            export PATH=$PATH:''${RUSTUP_HOME:-~/.rustup}/toolchains/$RUSTC_VERSION-x86_64-unknown-linux-gnu/bin/
+            echo "Environment ready!" | ${pkgs.lolcat}/bin/lolcat
+            '';
+}
+/*
 { pkgs ? import <nixpkgs> {} }:
   let
-    overrides = (builtins.fromTOML (builtins.readFile ./rust-toolchain.toml));
+    overrides = (builtins.fromTOML (builtins.readFile ../rust-toolchain.toml));
     libPath = with pkgs; lib.makeLibraryPath [
       # load external libraries that you need in your rust project here
     ];
 in
   pkgs.mkShell rec {
+
+    # inputsFrom = [ (pkgs.callPackage ./default.nix { }) ];
+
     buildInputs = with pkgs; [
       clang
       llvmPackages.bintools
-
-      tailwindcss
-      tailwindcss-language-server
-
-      deno
-      go
-      hugo
-
-      # openssl
-      # gobject-introspection
-      # glibc
-      # glib
-      # gio-sharp
-      # pkg-config
-      # libgudev
-      # libudev-zero
+      rustup
     ];
     RUSTC_VERSION = overrides.toolchain.channel;
     # https://github.com/rust-lang/rust-bindgen#environment-variables
@@ -52,3 +65,4 @@ in
       ''-I${pkgs.glib.out}/lib/glib-2.0/include/''
     ];
   }
+*/
