@@ -6,7 +6,11 @@
     unstable-nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
   };
 
-  outputs = { self, nixpkgs, unstable-nixpkgs }: let
+  outputs = {
+    self,
+    nixpkgs,
+    unstable-nixpkgs,
+  }: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
@@ -20,18 +24,18 @@
         })
       ];
     };
-  in {
-    devShells.${system}.default = pkgs.mkShell {
-      buildInputs = with pkgs; [
-        unstable.kdenlive
+    in {
+      devShells.${system}.default = pkgs.mkShell {
+        buildInputs = with pkgs; [
         unstable.neovim
-        unstable.gimp-with-plugins
-        unstable.inkscape-with-extensions
-        krita
+        (pkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/abhi-xyz/nix-fonts/refs/heads/master/fonts/lora/default.nix";
+          sha256 = "sha256-f2mulc5ym/VAcp/mMUQ/W8C2qbs1HWHuAxPgOrG1lIU=";
+        })
       ];
-      shellHook = ''
+        shellHook = ''
         echo "Environment ready!" | ${pkgs.lolcat}/bin/lolcat
-      '';
+        '';
+      };
     };
-  };
 }
